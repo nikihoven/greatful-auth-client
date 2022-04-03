@@ -1,17 +1,18 @@
 import { createRoot } from 'react-dom/client'
 import { StoreProvider } from 'easy-peasy'
+import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
 import { store } from './store'
 
 import './index.css'
 
-const container = document.getElementById('root')
-
-const root = createRoot(container as Element)
+const root = createRoot(document.getElementById('root') as Element)
 
 root.render(
-    <StoreProvider store={store}>
-        <App/>
-    </StoreProvider>
+    <BrowserRouter>
+        <StoreProvider store={store}>
+            <App/>
+        </StoreProvider>
+    </BrowserRouter>
 )

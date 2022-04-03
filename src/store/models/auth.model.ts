@@ -13,8 +13,8 @@ interface AuthActions {
 }
 
 interface AuthThunks {
-    signup: Thunk<this, {id: string, nickname: string, remember: boolean}>
-    login: Thunk<this, {id: string, nickname: string, remember: boolean}>
+    signup: Thunk<this, {nickname: string, password: string, remember: boolean}>
+    login: Thunk<this, {nickname: string, password: string, remember: boolean}>
     refresh: Thunk<this>
     logout: Thunk<this>
 }
@@ -22,12 +22,10 @@ interface AuthThunks {
 export interface AuthModel extends AuthState, AuthActions, AuthThunks {}
 
 export const initialAuthModel: AuthModel = {
-    /*----    State    ----*/
     user: null,
     accessToken: null,
 
 
-    /*----    Actions    ----*/
     setUser: action((state, payload) => {
         state.user = payload
     }),
@@ -36,11 +34,10 @@ export const initialAuthModel: AuthModel = {
     }),
 
 
-    /*----    Thunks    ----*/
-    signup: thunk((actions, {id, nickname, remember}) => {
+    signup: thunk((actions, {nickname, password, remember}) => {
 
     }),
-    login: thunk((actions, {id, nickname, remember}) => {
+    login: thunk((actions, {nickname, password, remember}) => {
 
     }),
     refresh: thunk((actions) => {
