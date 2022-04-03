@@ -6,11 +6,13 @@ import { instance } from '../../http'
 interface AuthState {
     user: IUser | null
     accessToken: string | null
+    error: string | null
 }
 
 interface AuthActions {
     setUser: Action<this, IUser | null>
     setAccessToken: Action<this, string | null>
+    setError: Action<this, string | null>
 }
 
 interface AuthThunks {
@@ -25,6 +27,7 @@ export interface AuthModel extends AuthState, AuthActions, AuthThunks {}
 export const initialAuthModel: AuthModel = {
     user: null,
     accessToken: null,
+    error: null,
 
 
     setUser: action((state, payload) => {
@@ -32,6 +35,9 @@ export const initialAuthModel: AuthModel = {
     }),
     setAccessToken: action((state, payload) => {
         state.accessToken = payload
+    }),
+    setError: action((state, payload) => {
+        state.error = payload
     }),
 
 
