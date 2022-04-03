@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import { useTypedStoreState } from './store/hooks'
+import { Layout } from './components/routing/layout'
 import { UsersPage } from './pages/users.page'
 import { LoginPage } from './pages/login.page'
 import { SignupPage } from './pages/signup.page'
-import { Layout } from './components/routing/layout'
 
 const App = () => {
     const {accessToken} = useTypedStoreState(state => state.auth)

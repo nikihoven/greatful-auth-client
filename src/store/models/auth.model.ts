@@ -1,6 +1,7 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
 
 import { IUser } from '../../types'
+import { instance } from '../../http'
 
 interface AuthState {
     user: IUser | null
@@ -34,16 +35,20 @@ export const initialAuthModel: AuthModel = {
     }),
 
 
-    signup: thunk((actions, {nickname, password, remember}) => {
-
+    signup: thunk(async (actions, {nickname, password, remember}) => {
+        const data = await instance.post('/auth/signup', {nickname, password})
+        console.log(data)
     }),
-    login: thunk((actions, {nickname, password, remember}) => {
-
+    login: thunk(async (actions, {nickname, password, remember}) => {
+        const data = await instance.post('/auth/login', {nickname, password})
+        console.log(data)
     }),
-    refresh: thunk((actions) => {
-
+    refresh: thunk(async (actions) => {
+        const data = await instance.get('/auth/refresh')
+        console.log(data)
     }),
-    logout: thunk((actions) => {
-
+    logout: thunk(async (actions) => {
+        const data = await instance.get('/auth/logout')
+        console.log(data)
     })
 }
