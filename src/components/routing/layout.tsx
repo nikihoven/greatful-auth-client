@@ -10,8 +10,8 @@ const Template = () => {
         <Layout style={{height: '100%'}}>
             <Header/>
             <Content style={{padding: '60px 50px', height: '100%'}}>
-                <Row style={{background: 'white', height: '100%'}}>
-                    <Col>
+                <Row  style={{background: 'white', padding: '30px', height: '100%', }}>
+                    <Col span={20} offset={1}>
                         <Outlet/>
                     </Col>
                 </Row>
