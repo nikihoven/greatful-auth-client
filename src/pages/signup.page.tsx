@@ -15,7 +15,7 @@ interface SignupValues {
 const SignupPage = () => {
     const [disabled, setDisabled] = useState<boolean>(true)
 
-    const {error} = useTypedStoreState(state => state.auth)
+    const {error} = useTypedStoreState(state => state.global)
     const {signup} = useTypedStoreActions(actions => actions.auth)
 
     const changeHandler = (_: any, allFields: FieldData[]) => {

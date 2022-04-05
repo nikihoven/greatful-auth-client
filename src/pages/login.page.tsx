@@ -10,8 +10,9 @@ interface LoginValues {
 }
 
 const LoginPage = () => {
-    const {error} = useTypedStoreState(state => state.auth)
-    const {login, setError} = useTypedStoreActions(actions => actions.auth)
+    const {error} = useTypedStoreState(state => state.global)
+    const {setError} = useTypedStoreActions(actions => actions.global)
+    const {login} = useTypedStoreActions(actions => actions.auth)
 
     const onFinish = (values: LoginValues) => {
         const {username, password, remember} = values

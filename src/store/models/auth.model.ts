@@ -3,24 +3,23 @@ import { AxiosError } from 'axios'
 
 import { instance } from '../../http'
 import { AuthResponse, IUser } from '../../types'
+import { Model } from './index'
 
 interface AuthState {
     user: IUser | null
     accessToken: string | null
-    error: string | null
 }
 
 interface AuthActions {
     setUser: Action<this, IUser | null>
     setAccessToken: Action<this, string | null>
-    setError: Action<this, string | null>
 }
 
 interface AuthThunks {
-    signup: Thunk<this, {username: string, password: string, remember: boolean}>
-    login: Thunk<this, {username: string, password: string, remember: boolean}>
-    refresh: Thunk<this>
-    logout: Thunk<this>
+    signup: Thunk<this, {username: string, password: string, remember: boolean}, undefined, Model>
+    login: Thunk<this, {username: string, password: string, remember: boolean}, undefined, Model>
+    refresh: Thunk<this, undefined, undefined, Model>
+    logout: Thunk<this, undefined, undefined, Model>
 }
 
 export interface AuthModel extends AuthState, AuthActions, AuthThunks {}
@@ -28,7 +27,6 @@ export interface AuthModel extends AuthState, AuthActions, AuthThunks {}
 export const initialAuthModel: AuthModel = {
     user: null,
     accessToken: null,
-    error: null,
 
 
     setUser: action((state, payload) => {
@@ -37,39 +35,35 @@ export const initialAuthModel: AuthModel = {
     setAccessToken: action((state, payload) => {
         state.accessToken = payload
     }),
-    setError: action((state, payload) => {
-        state.error = payload
-    }),
 
 
-    signup: thunk(async (actions, {username, password, remember}) => {
+    signup: thunk(async (actions, {username, password, remember}, {getStoreActions}) => {
         await instance.post<AuthResponse>('/auth/signup', {username, password})
             .then(data => data.data)
             .then(data => {
                 const {id, username, accessToken} = data
-
                 actions.setUser({
                     id,
                     username
                 })
                 actions.setAccessToken(accessToken)
-                actions.setError(null)
+                getStoreActions().global.setError(null)
                 remember && localStorage.setItem('persistence', JSON.stringify(true))
             })
             .catch((err: AxiosError) => {
                 switch (err.response?.status) {
                     case 406:
-                        actions.setError('Invalid data')
+                        getStoreActions().global.setError('Invalid data')
                         break
                     case 409:
-                        actions.setError('User with this username has already existed')
+                        getStoreActions().global.setError('User with this username has already existed')
                         break
                     default:
-                        actions.setError('Unresolved error, try again later')
+                        getStoreActions().global.setError('Unresolved error, try again later')
                 }
             })
     }),
-    login: thunk(async (actions, {username, password, remember}) => {
+    login: thunk(async (actions, {username, password, remember}, {getStoreActions}) => {
         await instance.post<AuthResponse>('/auth/login', {username, password})
             .then(data => data.data)
             .then(data => {
@@ -80,20 +74,20 @@ export const initialAuthModel: AuthModel = {
                     username
                 })
                 actions.setAccessToken(accessToken)
-                actions.setError(null)
+                getStoreActions().global.setError(null)
                 remember && localStorage.setItem('persistence', JSON.stringify(true))
             })
             .catch((err: AxiosError) => {
                 switch (err.response?.status) {
                     case 400:
-                        actions.setError('Incorrect username or password')
+                        getStoreActions().global.setError('Incorrect username or password')
                         break
                     default:
-                        actions.setError('Unresolved error, try again later')
+                        getStoreActions().global.setError('Unresolved error, try again later')
                 }
             })
     }),
-    refresh: thunk(async actions => {
+    refresh: thunk(async (actions, _, {getStoreActions}) => {
         await instance.get<AuthResponse>('/auth/refresh')
             .then(data => data.data)
             .then(data => {
@@ -109,22 +103,22 @@ export const initialAuthModel: AuthModel = {
                 localStorage.clear()
                 actions.setUser(null)
                 actions.setAccessToken(null)
-                actions.setError(null)
+                getStoreActions().global.setError(null)
             })
     }),
-    logout: thunk(async actions => {
+    logout: thunk(async (actions, payload, {getStoreActions}) => {
         await instance.get<AuthResponse>('/auth/logout')
             .then(data => data.data)
             .then(() => {
                 actions.setUser(null)
                 actions.setAccessToken(null)
-                actions.setError(null)
+                getStoreActions().global.setError(null)
             })
             .catch(() => {
                 localStorage.clear()
                 actions.setUser(null)
                 actions.setAccessToken(null)
-                actions.setError(null)
+                getStoreActions().global.setError(null)
             })
     })
 }
