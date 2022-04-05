@@ -105,6 +105,7 @@ export const initialAuthModel: AuthModel = {
                 actions.setAccessToken(null)
                 getStoreActions().global.setError(null)
             })
+            .finally(() => setTimeout(() => getStoreActions().global.setLoading(false), 500))
     }),
     logout: thunk(async (actions, payload, {getStoreActions}) => {
         await instance.get<AuthResponse>('/auth/logout')

@@ -1,8 +1,8 @@
-import { action, Action, thunk, Thunk } from 'easy-peasy'
+import { action, Action } from 'easy-peasy'
 
 interface GlobalState {
     error: string | null
-    isLoading: boolean
+    globalLoading: boolean
 }
 
 interface GlobalActions {
@@ -16,12 +16,12 @@ export interface GlobalModel extends GlobalState, GlobalActions, GlobalThunks {}
 
 export const initialGlobalModel: GlobalModel = {
     error: null,
-    isLoading: true,
+    globalLoading: true,
 
     setError: action((state, payload) => {
         state.error = payload
     }),
     setLoading: action((state, payload) => {
-        state.isLoading = payload
+        state.globalLoading = payload
     })
 }
