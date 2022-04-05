@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useTypedStoreActions, useTypedStoreState } from './store/hooks'
 import { Template } from './components/routing/layout'
 import { Loader } from './components/routing/loader'
-import { UsersPage } from './pages/users.page'
+import { CustomersPage } from './pages/customers.page'
 import { LoginPage } from './pages/login.page'
 import { SignupPage } from './pages/signup.page'
 
@@ -33,7 +33,7 @@ const App = () => {
                         accessToken
                             ?
                             <>
-                                <Route path="/" element={<UsersPage/>}/>
+                                <Route path="/" element={<CustomersPage/>}/>
                                 <Route path="*" element={<Navigate to="/"/>}/>
                             </>
                             :
