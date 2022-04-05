@@ -54,6 +54,7 @@ export const initialAuthModel: AuthModel = {
                 })
                 actions.setAccessToken(accessToken)
                 actions.setError(null)
+                remember && localStorage.setItem('persistence', JSON.stringify(true))
             })
             .catch((err: AxiosError) => {
                 switch (err.response?.status) {
@@ -80,6 +81,7 @@ export const initialAuthModel: AuthModel = {
                 })
                 actions.setAccessToken(accessToken)
                 actions.setError(null)
+                remember && localStorage.setItem('persistence', JSON.stringify(true))
             })
             .catch((err: AxiosError) => {
                 switch (err.response?.status) {
@@ -94,6 +96,15 @@ export const initialAuthModel: AuthModel = {
     refresh: thunk(async actions => {
         await instance.get<AuthResponse>('/auth/refresh')
             .then(data => data.data)
+            .then(data => {
+                const {id, username, accessToken} = data
+
+                actions.setUser({
+                    id,
+                    username
+                })
+                actions.setAccessToken(accessToken)
+            })
             .catch(() => {
                 localStorage.clear()
                 actions.setUser(null)
