@@ -49,24 +49,10 @@ instance.interceptors.response.use(
                             logout()
                         }
                     })
-
-                // try {
-                //     const data = await axios.get<ResponseAuthDto>('/auth/refresh')
-                //     const {id, nickname, accessToken} = data.data
-                //
-                //     setAccessToken(accessToken)
-                //     setUser({id, nickname})
-                //     if (prevRequest.headers) {
-                //         prevRequest.headers['Authorization'] = `Bearer ${accessToken}`
-                //     }
-                // } catch (e: AxiosError) {
-                //     if (e.response?.status === 401) {
-                //         localStorage.clear()
-                //         logout()
-                //     }
-                // }
             }
         }
+
+        return error
     }
 )
 

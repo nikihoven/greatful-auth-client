@@ -10,7 +10,7 @@ const App = () => {
     const {accessToken} = useTypedStoreState(state => state.auth)
 
     const location = useLocation()
-    
+
     return (
         <Routes>
             <Route element={<Template/>}>

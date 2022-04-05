@@ -1,4 +1,5 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
+import { AxiosError } from 'axios'
 
 import { AuthResponse, IUser } from '../../types'
 import { instance } from '../../http'
@@ -43,7 +44,11 @@ export const initialAuthModel: AuthModel = {
 
     signup: thunk(async (actions, {nickname, password, remember}) => {
         await instance.post<AuthResponse>('/auth/signup', {nickname, password})
-            .then(data => data.data)
+            .then(data => {
+                if (data instanceof Error) throw data
+
+                return data.data
+            })
             .then(data => {
                 const {id, nickname, accessToken} = data
 
@@ -53,11 +58,27 @@ export const initialAuthModel: AuthModel = {
                 })
                 actions.setAccessToken(accessToken)
                 actions.setError(null)
+            })
+            .catch((err: AxiosError) => {
+                switch (err.response?.status) {
+                    case 406:
+                        actions.setError('Invalid data')
+                        break
+                    case 409:
+                        actions.setError('User with this nickname has already existed')
+                        break
+                    default:
+                        actions.setError('Unresolved error, try again later')
+                }
             })
     }),
     login: thunk(async (actions, {nickname, password, remember}) => {
-        await instance.post('/auth/login', {nickname, password})
-            .then(data => data.data)
+        await instance.post<AuthResponse>('/auth/login', {nickname, password})
+            .then(data => {
+                if (data instanceof Error) throw data
+
+                return data.data
+            })
             .then(data => {
                 const {id, nickname, accessToken} = data
 
@@ -68,15 +89,40 @@ export const initialAuthModel: AuthModel = {
                 actions.setAccessToken(accessToken)
                 actions.setError(null)
             })
+            .catch((err: AxiosError) => {
+                switch (err.response?.status) {
+                    case 406:
+                        actions.setError('Incorrect nickname or password')
+                        break
+                    default:
+                        actions.setError('Unresolved error, try again later')
+                }
+            })
     }),
     refresh: thunk(async actions => {
-        await instance.get('/auth/refresh')
-            .then(data => console.log(data.data))
+        await instance.get<AuthResponse>('/auth/refresh')
+            .then(data => {
+                if (data instanceof Error) throw data
+            })
+            .catch(() => {
+                localStorage.clear()
+                actions.setUser(null)
+                actions.setAccessToken(null)
+                actions.setError(null)
+            })
     }),
     logout: thunk(async actions => {
-        await instance.get('/auth/logout')
-            .then(data => data.data)
+        await instance.get<AuthResponse>('/auth/logout')
+            .then(data => {
+                if (data instanceof Error) throw data
+            })
             .then(() => {
+                actions.setUser(null)
+                actions.setAccessToken(null)
+                actions.setError(null)
+            })
+            .catch(() => {
+                localStorage.clear()
                 actions.setUser(null)
                 actions.setAccessToken(null)
                 actions.setError(null)
