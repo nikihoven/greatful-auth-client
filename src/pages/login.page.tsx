@@ -1,4 +1,6 @@
 import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd'
+import { Link } from 'react-router-dom'
+
 import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 
 interface LoginValues {
@@ -17,21 +19,21 @@ const LoginPage = () => {
             setError('Fill in all the fields!')
             return
         }
-        
+
         login({nickname, password, remember})
     }
 
     return (
         <Form
             name="basic"
-            labelCol={{span: 2, offset: 1}}
-            wrapperCol={{span: 10}}
+            labelCol={{span: 3}}
+            wrapperCol={{span: 10, offset: 1}}
             initialValues={{remember: true}}
             onFinish={onFinish}
             autoComplete="off"
         >
             <Form.Item>
-                <Typography.Title>Sign in to the application</Typography.Title>
+                <Typography.Title>Register in the application</Typography.Title>
             </Form.Item>
 
             <Form.Item
@@ -46,22 +48,27 @@ const LoginPage = () => {
                 label="Password"
                 name="password"
                 rules={[{required: true, message: 'Please input your password!'}]}
+                style={{marginBottom: 0}}
             >
                 <Input.Password autoComplete="none"/>
             </Form.Item>
 
+            <Form.Item wrapperCol={{offset: 4}}>
+                <Typography.Text>Haven't account yet? <Link to="/signup">Sign up</Link></Typography.Text>
+            </Form.Item>
+
             {
                 error &&
-                <Form.Item wrapperCol={{offset: 3, span: 10}}>
+                <Form.Item wrapperCol={{offset: 4, span: 10}}>
                     <Alert message={error} type="error"/>
                 </Form.Item>
             }
 
-            <Form.Item name="remember" valuePropName="checked" wrapperCol={{offset: 3, span: 10}}>
+            <Form.Item name="remember" valuePropName="checked" wrapperCol={{offset: 4, span: 10}}>
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
-            <Form.Item wrapperCol={{offset: 3, span: 10}}>
+            <Form.Item wrapperCol={{offset: 4, span: 10}}>
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
