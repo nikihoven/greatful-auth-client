@@ -1,10 +1,10 @@
 export interface IUser {
     id: string
-    nickname: string
+    username: string
 }
 
 export type AuthResponse = {
     id: string
-    nickname: string
+    username: string
     accessToken: string
 }

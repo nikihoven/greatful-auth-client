@@ -35,8 +35,8 @@ instance.interceptors.response.use(
             if (error?.response?.status === 403) {
                 await axios.get<AuthResponse>('/auth/refresh')
                     .then(data => {
-                        const {id, nickname, accessToken} = data.data
-                        setUser({id, nickname})
+                        const {id, username, accessToken} = data.data
+                        setUser({id, username})
                         setAccessToken(accessToken)
                         if (prevRequest.headers) {
                             prevRequest.headers['Authorization'] = `Bearer ${accessToken}`
@@ -52,7 +52,7 @@ instance.interceptors.response.use(
             }
         }
 
-        return error
+        throw error
     }
 )
 

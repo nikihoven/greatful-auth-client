@@ -4,7 +4,7 @@ import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd'
 import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 
 interface LoginValues {
-    nickname: string
+    username: string
     password: string
     remember: boolean
 }
@@ -14,14 +14,14 @@ const LoginPage = () => {
     const {login, setError} = useTypedStoreActions(actions => actions.auth)
 
     const onFinish = (values: LoginValues) => {
-        const {nickname, password, remember} = values
+        const {username, password, remember} = values
 
-        if (!nickname || !password) {
+        if (!username.trim() || !password.trim()) {
             setError('Fill in all the fields!')
             return
         }
 
-        login({nickname, password, remember})
+        login({username: username.trim(), password: password.trim(), remember})
     }
 
     return (
@@ -38,9 +38,12 @@ const LoginPage = () => {
             </Typography.Title>
 
             <Form.Item
-                label="Nickname"
-                name="nickname"
-                rules={[{required: true, message: 'Please input your username!'}]}
+                label="Username"
+                name="username"
+                rules={[
+                    {required: true, message: 'Please input your username!'},
+                    {whitespace: true, message: 'Username can not contain whitespaces'},
+                ]}
             >
                 <Input/>
             </Form.Item>
@@ -48,7 +51,10 @@ const LoginPage = () => {
             <Form.Item
                 label="Password"
                 name="password"
-                rules={[{required: true, message: 'Please input your password!'}]}
+                rules={[
+                    {required: true, message: 'Please input your password!', whitespace: true},
+                    {whitespace: true, message: 'Password can not contain whitespaces'},
+                ]}
                 style={{marginBottom: 0}}
             >
                 <Input.Password autoComplete="none"/>

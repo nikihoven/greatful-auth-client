@@ -6,7 +6,7 @@ import { FieldData } from 'rc-field-form/lib/interface.d'
 import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 
 interface SignupValues {
-    nickname: string
+    username: string
     password: string
     confirmPassword: string
     remember: boolean
@@ -25,14 +25,14 @@ const SignupPage = () => {
     }
 
     const onFinish = (values: SignupValues) => {
-        const {nickname, password, confirmPassword, remember} = values
+        const {username, password, confirmPassword, remember} = values
 
-        if (!nickname || !password || !confirmPassword || password !== confirmPassword) {
+        if (!username.trim() || !password.trim() || !confirmPassword.trim() || password !== confirmPassword) {
             setDisabled(true)
             return
         }
 
-        signup({nickname, password, remember})
+        signup({username: username.trim(), password: password.trim(), remember})
     }
 
     return (
@@ -51,13 +51,13 @@ const SignupPage = () => {
 
 
             <Form.Item
-                name="nickname"
-                label="Nickname"
+                name="username"
+                label="Username"
                 tooltip="What do you want others to call you?"
                 rules={[
-                    {required: true, message: 'Please input your nickname!', whitespace: true},
-                    {min: 6, message: 'The nickname must be longer than 6 characters'},
-                    {max: 32, message: 'The nickname must be shorter than 32 characters'}
+                    {required: true, message: 'Please input your username!', whitespace: true},
+                    {min: 6, message: 'The username must be longer than 6 characters'},
+                    {max: 32, message: 'The username must be shorter than 32 characters'}
                 ]}
             >
                 <Input/>
@@ -68,7 +68,7 @@ const SignupPage = () => {
                 name="password"
                 label="Password"
                 rules={[
-                    {required: true, message: 'Please input your password!'},
+                    {required: true, message: 'Please input your password!', whitespace: true},
                     {min: 6, message: 'The password must be longer than 6 characters'},
                     {max: 32, message: 'The password must be shorter than 32 characters'}
                 ]}
@@ -84,7 +84,7 @@ const SignupPage = () => {
                 dependencies={['password']}
                 hasFeedback
                 rules={[
-                    {required: true, message: 'Please confirm your password!'},
+                    {required: true, message: 'Please confirm your password!', whitespace: true},
                     ({getFieldValue}) => ({
                         validator(_, value) {
                             if (!value || getFieldValue('password') === value) {

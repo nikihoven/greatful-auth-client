@@ -1,8 +1,8 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
 import { AxiosError } from 'axios'
 
-import { AuthResponse, IUser } from '../../types'
 import { instance } from '../../http'
+import { AuthResponse, IUser } from '../../types'
 
 interface AuthState {
     user: IUser | null
@@ -17,8 +17,8 @@ interface AuthActions {
 }
 
 interface AuthThunks {
-    signup: Thunk<this, {nickname: string, password: string, remember: boolean}>
-    login: Thunk<this, {nickname: string, password: string, remember: boolean}>
+    signup: Thunk<this, {username: string, password: string, remember: boolean}>
+    login: Thunk<this, {username: string, password: string, remember: boolean}>
     refresh: Thunk<this>
     logout: Thunk<this>
 }
@@ -42,19 +42,15 @@ export const initialAuthModel: AuthModel = {
     }),
 
 
-    signup: thunk(async (actions, {nickname, password, remember}) => {
-        await instance.post<AuthResponse>('/auth/signup', {nickname, password})
+    signup: thunk(async (actions, {username, password, remember}) => {
+        await instance.post<AuthResponse>('/auth/signup', {username, password})
+            .then(data => data.data)
             .then(data => {
-                if (data instanceof Error) throw data
-
-                return data.data
-            })
-            .then(data => {
-                const {id, nickname, accessToken} = data
+                const {id, username, accessToken} = data
 
                 actions.setUser({
                     id,
-                    nickname
+                    username
                 })
                 actions.setAccessToken(accessToken)
                 actions.setError(null)
@@ -65,34 +61,30 @@ export const initialAuthModel: AuthModel = {
                         actions.setError('Invalid data')
                         break
                     case 409:
-                        actions.setError('User with this nickname has already existed')
+                        actions.setError('User with this username has already existed')
                         break
                     default:
                         actions.setError('Unresolved error, try again later')
                 }
             })
     }),
-    login: thunk(async (actions, {nickname, password, remember}) => {
-        await instance.post<AuthResponse>('/auth/login', {nickname, password})
+    login: thunk(async (actions, {username, password, remember}) => {
+        await instance.post<AuthResponse>('/auth/login', {username, password})
+            .then(data => data.data)
             .then(data => {
-                if (data instanceof Error) throw data
-
-                return data.data
-            })
-            .then(data => {
-                const {id, nickname, accessToken} = data
+                const {id, username, accessToken} = data
 
                 actions.setUser({
                     id,
-                    nickname
+                    username
                 })
                 actions.setAccessToken(accessToken)
                 actions.setError(null)
             })
             .catch((err: AxiosError) => {
                 switch (err.response?.status) {
-                    case 406:
-                        actions.setError('Incorrect nickname or password')
+                    case 400:
+                        actions.setError('Incorrect username or password')
                         break
                     default:
                         actions.setError('Unresolved error, try again later')
@@ -101,9 +93,7 @@ export const initialAuthModel: AuthModel = {
     }),
     refresh: thunk(async actions => {
         await instance.get<AuthResponse>('/auth/refresh')
-            .then(data => {
-                if (data instanceof Error) throw data
-            })
+            .then(data => data.data)
             .catch(() => {
                 localStorage.clear()
                 actions.setUser(null)
@@ -113,9 +103,7 @@ export const initialAuthModel: AuthModel = {
     }),
     logout: thunk(async actions => {
         await instance.get<AuthResponse>('/auth/logout')
-            .then(data => {
-                if (data instanceof Error) throw data
-            })
+            .then(data => data.data)
             .then(() => {
                 actions.setUser(null)
                 actions.setAccessToken(null)
