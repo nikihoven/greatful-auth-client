@@ -1,9 +1,9 @@
-import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd'
-
-import { FieldData } from 'rc-field-form/lib/interface.d'
-import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd'
+import { FieldData } from 'rc-field-form/lib/interface.d'
+
+import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 
 interface SignupValues {
     nickname: string
@@ -13,9 +13,9 @@ interface SignupValues {
 }
 
 const SignupPage = () => {
-    const {error} = useTypedStoreState(state => state.auth)
     const [disabled, setDisabled] = useState<boolean>(true)
 
+    const {error} = useTypedStoreState(state => state.auth)
     const {signup} = useTypedStoreActions(actions => actions.auth)
 
     const changeHandler = (_: any, allFields: FieldData[]) => {
@@ -45,9 +45,10 @@ const SignupPage = () => {
             onFieldsChange={changeHandler}
             autoComplete="off"
         >
-            <Form.Item>
-                <Typography.Title>Sign in to the application</Typography.Title>
-            </Form.Item>
+            <Typography.Title>
+                Register in the application
+            </Typography.Title>
+
 
             <Form.Item
                 name="nickname"
@@ -58,7 +59,9 @@ const SignupPage = () => {
                     {min: 6, message: 'The nickname must be longer than 6 characters'},
                     {max: 32, message: 'The nickname must be shorter than 32 characters'}
                 ]}
-            ><Input/></Form.Item>
+            >
+                <Input/>
+            </Form.Item>
 
 
             <Form.Item
@@ -70,7 +73,10 @@ const SignupPage = () => {
                     {max: 32, message: 'The password must be shorter than 32 characters'}
                 ]}
                 hasFeedback
-            ><Input.Password autoComplete="off"/></Form.Item>
+            >
+                <Input.Password autoComplete="off"/>
+            </Form.Item>
+
 
             <Form.Item
                 name="confirmPassword"
@@ -89,10 +95,14 @@ const SignupPage = () => {
                     })
                 ]}
                 style={{marginBottom: 0}}
-            ><Input.Password autoComplete="off"/></Form.Item>
+            >
+                <Input.Password autoComplete="off"/>
+            </Form.Item>
 
             <Form.Item wrapperCol={{offset: 4}}>
-                <Typography.Text>Already have account? <Link to="/signup">Log in</Link></Typography.Text>
+                <Typography.Text>
+                    Already have account? <Link to="/signup">Log in</Link>
+                </Typography.Text>
             </Form.Item>
 
             {
@@ -103,7 +113,9 @@ const SignupPage = () => {
             }
 
             <Form.Item name="remember" valuePropName="checked" wrapperCol={{offset: 4, span: 10}}>
-                <Checkbox>Remember me</Checkbox>
+                <Checkbox>
+                    Remember me
+                </Checkbox>
             </Form.Item>
 
             <Form.Item wrapperCol={{offset: 4, span: 10}}>

@@ -10,22 +10,23 @@ const App = () => {
     const {accessToken} = useTypedStoreState(state => state.auth)
 
     const location = useLocation()
-
+    
     return (
         <Routes>
             <Route element={<Template/>}>
-                {accessToken
-                    ?
-                    <>
-                        <Route path="/" element={<UsersPage/>}/>
-                        <Route path="*" element={<Navigate to="/"/>}/>
-                    </>
-                    :
-                    <>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/signup" element={<SignupPage/>}/>
-                        <Route path="*" element={<Navigate to="/login" state={{from: location}} replace/>}/>
-                    </>
+                {
+                    accessToken
+                        ?
+                        <>
+                            <Route path="/" element={<UsersPage/>}/>
+                            <Route path="*" element={<Navigate to="/"/>}/>
+                        </>
+                        :
+                        <>
+                            <Route path="/login" element={<LoginPage/>}/>
+                            <Route path="/signup" element={<SignupPage/>}/>
+                            <Route path="*" element={<Navigate to="/login" state={{from: location}} replace/>}/>
+                        </>
                 }
             </Route>
         </Routes>

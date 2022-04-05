@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 import { getAccessToken, setAccessToken, setUser, logout } from '../store'
-import { ResponseAuthDto } from './dto'
+import { AuthResponse } from '../types'
 
 interface AxiosRequestConfigExtended extends AxiosRequestConfig {
     sent: boolean
@@ -33,7 +33,7 @@ instance.interceptors.response.use(
             prevRequest.sent = true
 
             if (error?.response?.status === 403) {
-                await axios.get<ResponseAuthDto>('/auth/refresh')
+                await axios.get<AuthResponse>('/auth/refresh')
                     .then(data => {
                         const {id, nickname, accessToken} = data.data
                         setUser({id, nickname})

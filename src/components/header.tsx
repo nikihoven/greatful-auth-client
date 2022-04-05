@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom'
 import { Col, Menu, Row, Typography } from 'antd'
 import { Header as Hdr } from 'antd/es/layout/layout'
-import { Link } from 'react-router-dom'
 
 import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 

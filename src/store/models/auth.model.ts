@@ -1,6 +1,6 @@
 import { action, Action, thunk, Thunk } from 'easy-peasy'
 
-import { IUser } from '../../types'
+import { AuthResponse, IUser } from '../../types'
 import { instance } from '../../http'
 
 interface AuthState {
@@ -42,19 +42,44 @@ export const initialAuthModel: AuthModel = {
 
 
     signup: thunk(async (actions, {nickname, password, remember}) => {
-        const data = await instance.post('/auth/signup', {nickname, password})
-        console.log(data)
+        await instance.post<AuthResponse>('/auth/signup', {nickname, password})
+            .then(data => data.data)
+            .then(data => {
+                const {id, nickname, accessToken} = data
+
+                actions.setUser({
+                    id,
+                    nickname
+                })
+                actions.setAccessToken(accessToken)
+                actions.setError(null)
+            })
     }),
     login: thunk(async (actions, {nickname, password, remember}) => {
-        const data = await instance.post('/auth/login', {nickname, password})
-        console.log(data)
+        await instance.post('/auth/login', {nickname, password})
+            .then(data => data.data)
+            .then(data => {
+                const {id, nickname, accessToken} = data
+
+                actions.setUser({
+                    id,
+                    nickname
+                })
+                actions.setAccessToken(accessToken)
+                actions.setError(null)
+            })
     }),
-    refresh: thunk(async (actions) => {
-        const data = await instance.get('/auth/refresh')
-        console.log(data)
+    refresh: thunk(async actions => {
+        await instance.get('/auth/refresh')
+            .then(data => console.log(data.data))
     }),
-    logout: thunk(async (actions) => {
-        const data = await instance.get('/auth/logout')
-        console.log(data)
+    logout: thunk(async actions => {
+        await instance.get('/auth/logout')
+            .then(data => data.data)
+            .then(() => {
+                actions.setUser(null)
+                actions.setAccessToken(null)
+                actions.setError(null)
+            })
     })
 }

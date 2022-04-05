@@ -1,5 +1,5 @@
-import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd'
 import { Link } from 'react-router-dom'
+import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd'
 
 import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 
@@ -15,6 +15,7 @@ const LoginPage = () => {
 
     const onFinish = (values: LoginValues) => {
         const {nickname, password, remember} = values
+
         if (!nickname || !password) {
             setError('Fill in all the fields!')
             return
@@ -32,13 +33,13 @@ const LoginPage = () => {
             onFinish={onFinish}
             autoComplete="off"
         >
-            <Form.Item>
-                <Typography.Title>Register in the application</Typography.Title>
-            </Form.Item>
+            <Typography.Title>
+                Sign in to the application
+            </Typography.Title>
 
             <Form.Item
-                label="Username"
-                name="username"
+                label="Nickname"
+                name="nickname"
                 rules={[{required: true, message: 'Please input your username!'}]}
             >
                 <Input/>
