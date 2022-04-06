@@ -33,7 +33,7 @@ instance.interceptors.response.use(
             prevRequest.sent = true
 
             if (error?.response?.status === 403) {
-                await axios.get<AuthResponse>('/auth/refresh')
+                await instance.get<AuthResponse>('/auth/refresh')
                     .then(data => {
                         const {id, username, accessToken} = data.data
                         setUser({id, username})
@@ -41,7 +41,7 @@ instance.interceptors.response.use(
                         if (prevRequest.headers) {
                             prevRequest.headers['Authorization'] = `Bearer ${accessToken}`
                         }
-                        return axios(prevRequest)
+                        return instance(prevRequest)
                     })
                     .catch((err: AxiosError) => {
                         if (err.response?.status === 401) {
