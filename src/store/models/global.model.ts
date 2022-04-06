@@ -10,9 +10,7 @@ interface GlobalActions {
     setError: Action<this, string | null>
 }
 
-interface GlobalThunks {}
-
-export interface GlobalModel extends GlobalState, GlobalActions, GlobalThunks {}
+export interface GlobalModel extends GlobalState, GlobalActions {}
 
 export const initialGlobalModel: GlobalModel = {
     error: null,

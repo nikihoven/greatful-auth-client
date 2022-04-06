@@ -132,6 +132,7 @@ const SignupPage = () => {
                 </Form.Item>
             }
 
+
             <Form.Item
                 name="remember"
                 valuePropName="checked"
@@ -141,6 +142,7 @@ const SignupPage = () => {
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
+
             <Form.Item
                 wrapperCol={itemsCol}
                 className="form__linking"
@@ -148,7 +150,10 @@ const SignupPage = () => {
                 <Typography.Text>Already have account? <Link to="/signup">Log in</Link></Typography.Text>
             </Form.Item>
 
-            <Form.Item wrapperCol={itemsCol}>
+
+            <Form.Item
+                wrapperCol={itemsCol}
+            >
                 <Button type="primary" htmlType="submit" disabled={disabled}>
                     Register
                 </Button>

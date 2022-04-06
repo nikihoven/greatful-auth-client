@@ -30,18 +30,20 @@ const App = () => {
                 {
                     !globalLoading
                         ?
-                        accessToken
-                            ?
-                            <>
-                                <Route path="/" element={<CustomersPage/>}/>
-                                <Route path="*" element={<Navigate to="/"/>}/>
-                            </>
-                            :
-                            <>
-                                <Route path="/login" element={<LoginPage/>}/>
-                                <Route path="/signup" element={<SignupPage/>}/>
-                                <Route path="*" element={<Navigate to="/login" state={{from: location}} replace/>}/>
-                            </>
+                        (
+                            accessToken
+                                ?
+                                <>
+                                    <Route path="/" element={<CustomersPage/>}/>
+                                    <Route path="*" element={<Navigate to="/"/>}/>
+                                </>
+                                :
+                                <>
+                                    <Route path="/login" element={<LoginPage/>}/>
+                                    <Route path="/signup" element={<SignupPage/>}/>
+                                    <Route path="*" element={<Navigate to="/login" state={{from: location}} replace/>}/>
+                                </>
+                        )
                         :
                         <Route path="*" element={<Loader/>}/>
                 }

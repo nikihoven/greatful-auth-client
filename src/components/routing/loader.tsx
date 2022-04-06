@@ -6,7 +6,7 @@ const Loader = () => {
     return (
         <Spin
             className="loader"
-            indicator={<LoadingOutlined style={{ fontSize: 100 }} spin />}
+            indicator={<LoadingOutlined style={{fontSize: 100}} spin/>}
         />
     )
 }

@@ -32,12 +32,11 @@ export const initialCustomersModel: CustomersModel = {
     }),
 
 
-    getCustomers: thunk(async (actions, payload, {getStoreActions, getStoreState}) => {
+    getCustomers: thunk(async (actions, payload, {getStoreActions}) => {
         actions.setLoading(true)
         getStoreActions().global.setError(null)
         await instance.get<CustomersResponse>('/customers')
-            .then(data => data.data)
-            .then(data => {
+            .then(({data}) => {
                 if (data) {
                     actions.setCustomers(data.customers)
                 }

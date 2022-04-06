@@ -1,27 +1,29 @@
 import { useEffect } from 'react'
+import { Alert, Table } from 'antd'
+
 import { useTypedStoreActions, useTypedStoreState } from '../store/hooks'
 import { Loader } from '../components/routing/loader'
-import { Table } from 'antd'
 
 const columns = [
     {
         title: 'Id',
         dataIndex: 'id',
-        key: 'id',
+        key: 'id'
     },
     {
         title: 'Username',
         dataIndex: 'username',
-        key: 'username',
+        key: 'username'
     },
     {
         title: 'CreatedAt',
         dataIndex: 'createdAt',
-        key: 'createdAt',
-    },
-];
+        key: 'createdAt'
+    }
+]
 
 const CustomersPage = () => {
+    const {error} = useTypedStoreState(state => state.global)
     const {loading, customers} = useTypedStoreState(state => state.customers)
     const {getCustomers} = useTypedStoreActions(actions => actions.customers)
 
@@ -34,11 +36,18 @@ const CustomersPage = () => {
             ?
             <Loader/>
             :
-            (customers
+            (
+                error
                     ?
-                    <Table dataSource={customers} columns={columns} rowKey={record => record.id}/>
+                    <Alert message={error} type="error"/>
                     :
-                    <h1>No customers data</h1>
+                    (
+                        customers
+                            ?
+                            <Table dataSource={customers} columns={columns} rowKey={record => record.id}/>
+                            :
+                            <h1>No customers data</h1>
+                    )
             )
 
     )

@@ -39,8 +39,7 @@ export const initialAuthModel: AuthModel = {
 
     signup: thunk(async (actions, {username, password, remember}, {getStoreActions}) => {
         await instance.post<AuthResponse>('/auth/signup', {username, password})
-            .then(data => data.data)
-            .then(data => {
+            .then(({data}) => {
                 const {id, username, accessToken} = data
                 actions.setUser({
                     id,
@@ -65,8 +64,7 @@ export const initialAuthModel: AuthModel = {
     }),
     login: thunk(async (actions, {username, password, remember}, {getStoreActions}) => {
         await instance.post<AuthResponse>('/auth/login', {username, password})
-            .then(data => data.data)
-            .then(data => {
+            .then(({data}) => {
                 const {id, username, accessToken} = data
 
                 actions.setUser({
@@ -89,8 +87,7 @@ export const initialAuthModel: AuthModel = {
     }),
     refresh: thunk(async (actions, _, {getStoreActions}) => {
         await instance.get<AuthResponse>('/auth/refresh')
-            .then(data => data.data)
-            .then(data => {
+            .then(({data}) => {
                 const {id, username, accessToken} = data
 
                 actions.setUser({
@@ -105,18 +102,14 @@ export const initialAuthModel: AuthModel = {
                 actions.setAccessToken(null)
                 getStoreActions().global.setError(null)
             })
-            .finally(() => setTimeout(() => getStoreActions().global.setLoading(false), 500))
+            .finally(() => getStoreActions().global.setLoading(false))
     }),
     logout: thunk(async (actions, payload, {getStoreActions}) => {
         await instance.get<AuthResponse>('/auth/logout')
-            .then(data => data.data)
-            .then(() => {
-                actions.setUser(null)
-                actions.setAccessToken(null)
-                getStoreActions().global.setError(null)
-            })
             .catch(() => {
                 localStorage.clear()
+            })
+            .finally(() => {
                 actions.setUser(null)
                 actions.setAccessToken(null)
                 getStoreActions().global.setError(null)

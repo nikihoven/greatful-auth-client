@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
-import { getAccessToken, setAccessToken, setUser, logout } from '../store'
+import { getAccessToken, logout, setAccessToken, setUser } from '../store'
 import { AuthResponse } from '../types'
 
 interface AxiosRequestConfigExtended extends AxiosRequestConfig {

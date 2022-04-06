@@ -61,6 +61,7 @@ const LoginPage = () => {
                 Sign in to the application
             </Typography.Title>
 
+
             <Form.Item
                 label="Username"
                 name="username"
@@ -71,6 +72,7 @@ const LoginPage = () => {
             >
                 <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
             </Form.Item>
+
 
             <Form.Item
                 label="Password"
@@ -89,6 +91,7 @@ const LoginPage = () => {
                 />
             </Form.Item>
 
+
             {
                 error &&
                 <Form.Item
@@ -99,6 +102,7 @@ const LoginPage = () => {
                 </Form.Item>
             }
 
+
             <Form.Item
                 name="remember"
                 valuePropName="checked"
@@ -108,6 +112,7 @@ const LoginPage = () => {
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
+
             <Form.Item
                 wrapperCol={itemsCol}
                 className="form__linking"
@@ -116,7 +121,9 @@ const LoginPage = () => {
             </Form.Item>
 
 
-            <Form.Item wrapperCol={itemsCol}>
+            <Form.Item
+                wrapperCol={itemsCol}
+            >
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
