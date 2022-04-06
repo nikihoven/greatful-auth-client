@@ -5,7 +5,7 @@ const Loader = () => {
 
     return (
         <Spin
-            style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+            className="loader"
             indicator={<LoadingOutlined style={{ fontSize: 100 }} spin />}
         />
     )

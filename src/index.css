@@ -7,3 +7,46 @@
 #root {
     height: 100%;
 }
+
+.layout {
+    height: 100%;
+}
+
+.layout__wrapper {
+    height: 100%;
+    padding: 60px 0;
+}
+
+.layout__content {
+    height: 100%;
+    padding: 30px;
+    background-color: #ffffff;
+}
+
+.loader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form__password {
+    margin-bottom: 0;
+}
+
+.form__password--withError {
+    margin-bottom: 12px;
+}
+
+.form__error {
+    margin: 0;
+}
+
+.form__remember {
+    margin-bottom: 0;
+}
+
+.form__linking {
+    margin-bottom: 12px;
+}

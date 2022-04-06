@@ -12,6 +12,30 @@ interface SignupValues {
     remember: boolean
 }
 
+const labelCol = {
+    sm: {span: 8},
+    md: {span: 5},
+    lg: {span: 4},
+    xl: {span: 4},
+    xxl: {span: 4}
+}
+
+const wrapperCol = {
+    sm: {span: 16},
+    md: {span: 14},
+    lg: {span: 10},
+    xl: {span: 10},
+    xxl: {span: 10}
+}
+
+const itemsCol = {
+    sm: {span: 16, offset: 8},
+    md: {span: 14, offset: 5},
+    lg: {span: 10, offset: 4},
+    xl: {span: 10, offset: 4},
+    xxl: {span: 10, offset: 4}
+}
+
 const SignupPage = () => {
     const [disabled, setDisabled] = useState<boolean>(true)
 
@@ -37,13 +61,11 @@ const SignupPage = () => {
 
     return (
         <Form
-            name="basic"
-            labelCol={{span: 3}}
-            wrapperCol={{span: 10, offset: 1}}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
             initialValues={{remember: true}}
             onFinish={onFinish}
             onFieldsChange={changeHandler}
-            autoComplete="off"
         >
             <Typography.Title>
                 Register in the application
@@ -94,31 +116,39 @@ const SignupPage = () => {
                         }
                     })
                 ]}
-                style={{marginBottom: 0}}
+                className={error ? 'form__password--withError' : 'form__password'}
             >
                 <Input.Password autoComplete="off"/>
             </Form.Item>
 
-            <Form.Item wrapperCol={{offset: 4}}>
-                <Typography.Text>
-                    Already have account? <Link to="/signup">Log in</Link>
-                </Typography.Text>
-            </Form.Item>
 
             {
                 error &&
-                <Form.Item wrapperCol={{offset: 4, span: 10}}>
+                <Form.Item
+                    wrapperCol={itemsCol}
+                    className="form__error"
+                >
                     <Alert message={error} type="error"/>
                 </Form.Item>
             }
 
-            <Form.Item name="remember" valuePropName="checked" wrapperCol={{offset: 4, span: 10}}>
-                <Checkbox>
-                    Remember me
-                </Checkbox>
+            <Form.Item
+                name="remember"
+                valuePropName="checked"
+                wrapperCol={itemsCol}
+                className="form__remember"
+            >
+                <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
-            <Form.Item wrapperCol={{offset: 4, span: 10}}>
+            <Form.Item
+                wrapperCol={itemsCol}
+                className="form__linking"
+            >
+                <Typography.Text>Already have account? <Link to="/signup">Log in</Link></Typography.Text>
+            </Form.Item>
+
+            <Form.Item wrapperCol={itemsCol}>
                 <Button type="primary" htmlType="submit" disabled={disabled}>
                     Register
                 </Button>

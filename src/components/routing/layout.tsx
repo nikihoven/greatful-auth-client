@@ -8,11 +8,18 @@ const {Content} = Layout
 const Template = () => {
 
     return (
-        <Layout style={{height: '100%'}}>
+        <Layout className="layout">
             <Header/>
-            <Content style={{padding: '60px 50px', height: '100%'}}>
-                <Row style={{background: 'white', padding: '30px', height: '100%'}}>
-                    <Col span={20} offset={1}>
+            <Content className="layout__wrapper">
+                <Row>
+                    <Col className="layout__content"
+                         xs={{span: 22, offset: 1}}
+                         sm={{span: 22, offset: 1}}
+                         md={{span: 22, offset: 1}}
+                         lg={{span: 22, offset: 1}}
+                         xl={{span: 20, offset: 2}}
+                         xxl={{span: 16, offset: 4}}
+                    >
                         <Outlet/>
                     </Col>
                 </Row>
