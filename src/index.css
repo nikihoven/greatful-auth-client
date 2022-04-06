@@ -24,8 +24,15 @@
 }
 
 .header__logotype {
-    background-color: #ffffff;
+    color: #d5d5d5!important;
     margin: 5px 0 0;
+}
+
+@media screen and (max-width: 500px) {
+    .header__logotype {
+        display: none;
+        appearance: none;
+    }
 }
 
 .loader {
