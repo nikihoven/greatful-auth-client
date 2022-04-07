@@ -1,7 +1,10 @@
 {
-  "name": "repeat-and-consolidate",
+  "name": "front-for-auth-nest",
   "version": "1.0.0",
+  "description": "Impressive front-end application for greatful jwt authorization",
+  "author": "Nikihoven",
   "private": true,
+  "license": "UNLICENSED",
   "dependencies": {
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
